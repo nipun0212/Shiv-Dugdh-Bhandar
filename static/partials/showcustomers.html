@@ -1,0 +1,28 @@
+ <div class = "well" ng-init = "init()">
+  <div  class="table-responsive">
+ <table st-table="rowCollection" class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Credit</th>
+    <th>Debit</th>
+    <th>Total</th>
+
+  </tr>
+  </thead>
+  <tbody>
+
+  <tr ng-repeat="x in customers |  orderBy:'userName'">
+    <td>{{x.userName}}</td>
+    <td>{{x.credit}}</td>
+    <td>{{x.debit}}</td>
+    <td>{{x.debit - x.credit}}</td>
+    <td><button class="btn" name='{{x.custId}}' ng-click="changeLocation(x.custId)">Show Orders
+                </button></td>
+    
+
+  </tr>
+  </tbody>
+</table>
+</div>
+</div>

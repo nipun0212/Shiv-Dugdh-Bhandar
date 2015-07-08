@@ -1,0 +1,42 @@
+<div class="row">
+        <div class="col-md-8">
+            <h3>Create a customer</h3>
+
+            <form name="customerForm" novalidate role="form">
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <span class="label label-danger">Required!</span>
+                    <input id="name" type="text" name="name" ng-model="customer.userName" class="form-control"
+                           ng-required="true"/>
+                </div>
+
+                  <div class="form-group">
+                    <label for="name">Email </label>
+                    <input id="name" type="text" name="name" ng-model="customer.mainEmail" class="form-control"/>
+                </div>
+
+                 <div class="form-group">
+                    <label for="name">Mobile Number <span class="required">*</span></label>
+                    <span class="label label-danger">Required!</span>
+                    <input id="name" type="text" name="name" ng-model="customer.mobileNumber" class="form-control"
+                           ng-required="true"/>
+                </div>
+
+                   <div class="form-group">
+                    <label for="name">Credit</label>
+                    <input id="name" type="text" name="name" ng-model="customer.credit" class="form-control"
+                           ng-required="true"/>
+                </div>
+
+                   <div class="form-group">
+                    <label for="name">Debit </label>
+                    <input id="name" type="text" name="name" ng-model="customer.debit" class="form-control"
+                           ng-required="true"/>
+                </div>
+
+				<button ng-click="init()")>Create
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

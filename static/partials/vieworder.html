@@ -1,0 +1,25 @@
+<div  class="table-responsive">
+   <table st-table="rowCollection" class="table">
+  <thead>
+  <tr>
+    <th>Order Number</th>
+    <th>Item Name</th>
+       <th>Item Quantity</th>
+         <th>Item Price</th>
+             <th>Order Date</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="order in orders | orderBy:'-orderDate'">
+    <td>{{order.key}}</td>
+     <td>{{order.itemName}}</td>
+      <td>{{order.itemQuantity}}</td>
+       <td>{{order.orderPrice}}</td>
+        <td>{{order.orderDate}}</td>
+  </tr>
+  </tbody>
+</table>
+</div>
+
+<div class ="well">

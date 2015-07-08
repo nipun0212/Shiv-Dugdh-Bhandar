@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Bootstrap the angular app after the Google Java Script libraries are loaded. -->
+<html lang="en" ng-app="dairyApp">
+<head>
+	 <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-cosmo.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/offcanvas.css">
+     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/controller.js"></script>
+
+  <script>
+        function init() {
+            gapi.client.load('dairymanagement', 'v1', null, '//' + window.location.host + '/_ah/api');
+            angular.bootstrap(document, ['dairyApp']);
+        };
+    </script>
+    <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
+</head>
+<body ng-controller = 'MainController'>
+<IMG  class="img-circle" border="2" width="158" height="150" hspace="10" src="/img/idol1.jpg">
+    <IMG  class="img-circle" border="2" width="158" height="150" hspace="10" src="/img/idol2.jpg">
+<div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div ng-controller = 'MainController'>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#/customer/addcustomer">addcustoimer</a></li>
+        <li><a href="#/customer/additem">Add Item</a></li>
+        <li><a href="#/customer/placeOrder">Place order</a></li>
+         <li><a href="#/customer/showcustomers">showcustomers</a></li>
+      </ul>
+      
+
+    </div>
+</div>
+
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            
+        </div>
+    </div>
+    <ng-view></ng-view>
+</div>
+</body>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</html>
+  

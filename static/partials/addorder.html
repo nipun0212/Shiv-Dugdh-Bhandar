@@ -1,0 +1,36 @@
+
+<div class="row" ng-init =init()>
+  <div class="container">
+    <div class = "well">
+        <input type="date" ng-model="item.date"/>
+        <input type="checkbox" ng-click="getQuantity()"/>
+      </div>
+    <div class ="well">
+      <lable ng-repeat = "it in items">
+        {{it.itemName}}<input type="radio"
+        ng-model="item.itemId"
+        value="{{it.key}}" ng-click="getQuantity()"/>
+      </label>
+      </div>
+      <div class = "well">
+        <input type="date" ng-model="itemcust.orderDate"/>
+      </div>
+      <div  class="table-responsive">
+      <table st-table="rowCollection" class="table">
+        <thead>
+          <tr>
+          <th>Name</th>
+          <th>Today Order with default previous order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="x in custLastPurchase">
+          <td>{{x.userName}}</td>
+          <td><input type="number" ng-model="custLastPurchase[$index].itemQuantity" name="length"  min="-100" max="10000" smart-float /></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary btn-block" ng-click = "submit()">Submit</button>
+    </div>
+  </div>
+</div>

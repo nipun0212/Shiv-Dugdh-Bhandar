@@ -1,0 +1,16 @@
+indexes:
+
+
+- kind: DailyOrder
+  properties:
+  - name: custId
+  - name: itemId
+  - name: orderDate
+  - name: itemQuantity
+    direction: desc
+
+
+- kind: Item
+  properties:
+  - name: __key__
+  - name: itemName
