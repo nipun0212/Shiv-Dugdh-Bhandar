@@ -42,9 +42,7 @@ message_types.VoidMessage,
 itemId=messages.IntegerField(1,variant=messages.Variant.INT32)
 )
 
-
 @endpoints.api(name='dairymanagement', version='v1')
-
 class DairyManagemnetApi(remote.Service):
 
 	def _copyCustomerToForm(self, cust):
@@ -59,9 +57,9 @@ class DairyManagemnetApi(remote.Service):
 			cf.check_initialized()
 		return cf
 
-	
 
-	@endpoints.method(CustomerMiniForm,CustomerForm, 
+
+	@endpoints.method(CustomerMiniForm,CustomerForm,
 	path='customer/addcustomer', http_method='GET', name='createCustomer')
 	def createCustomer(self,request):
 		c_id = Customer.allocate_ids(size=1)[0]
@@ -73,7 +71,8 @@ class DairyManagemnetApi(remote.Service):
 		if entity:
 			raise Exception('unique_property must have a unique value!')
 		Customer(**data).put()
-		return self._copyCustomerToForm(c_key.get())
+		return 0
+		#return self._copyCustomerToForm(c_key.get())
 
 	@endpoints.method(CUST_GET_REQUEST,CustomerForm,
 	path='customer/{custId}', http_method='GET', name='getCustomer')
@@ -95,7 +94,7 @@ class DairyManagemnetApi(remote.Service):
 			it.check_initialized()
 		return it
 
-	@endpoints.method(ItemForm,ItemForm, 
+	@endpoints.method(ItemForm,ItemForm,
 	path='item/createItem', http_method='GET', name='createItem')
 	def createItem(self,request):
 		i_id = Item.allocate_ids(size=1)[0]
@@ -120,9 +119,9 @@ class DairyManagemnetApi(remote.Service):
 				if hasattr(order, field.name):
 					if field.name in ('custId','itemId','key'):
 						setattr(of, field.name, (getattr(order, field.name)).integer_id())
-					else: 
+					else:
 						if field.name in ('orderDate'):
-				
+
 							setattr(of, field.name, datetime.datetime.strftime(getattr(order, field.name), '%m/%d/%y'))
 						else:
 							setattr(of, field.name, getattr(order, field.name))
@@ -143,14 +142,14 @@ class DairyManagemnetApi(remote.Service):
 		logging.debug(query)
 		x=0
 		for q in query:
-			data['key'] = q.key 
+			data['key'] = q.key
 			data['itemQuantity'] = q.itemQuantity + data['itemQuantity']
 			data['orderPrice'] = q.orderPrice + data['orderPrice']
 			data['orderDate'] = q.orderDate
 			x=1
 		if x:
 			print "i"
-			
+
 		else:
 			print "else mai hun"
 			do_id = Item.allocate_ids(size=1)[0]
@@ -160,7 +159,7 @@ class DairyManagemnetApi(remote.Service):
 
 
 
-	@endpoints.method(OrderForm,OrderFormOutput, 
+	@endpoints.method(OrderForm,OrderFormOutput,
 	path='order/placeOrder', http_method='GET', name='placeOrder')
 	def placeOrder(self,request):
 		print "creating Customer"
@@ -169,21 +168,21 @@ class DairyManagemnetApi(remote.Service):
 		data = {}
 		for field in request.all_fields():
 			if field.name == 'custId':
-			
+
 				data[field.name] = ndb.Key(Customer,getattr(request,field.name))
 				c_key = ndb.Key(Customer,getattr(request,field.name))
-				
-			
+
+
 				o_key = ndb.Key(Order, o_id,parent=data[field.name])
-			
+
 			else:
 				if field.name == 'itemId':
-					
+
 					data[field.name] = ndb.Key(Item,getattr(request,field.name))
 					obj = (ndb.Key(Item,getattr(request,field.name))).get()
-					
+
 					price = obj.itemPrice
-					
+
 				else:
 					if field.name == 'credit':
 						credit = getattr(request,field.name)
@@ -194,18 +193,18 @@ class DairyManagemnetApi(remote.Service):
 							else:
 								data[field.name] = datetime.datetime.strptime(getattr(request,field.name), '%m/%d/%y:%H:%M:%S')
 						else:
-							data[field.name] = getattr(request,field.name)        
+							data[field.name] = getattr(request,field.name)
 		data['key'] = o_key
-		
+
 		data['orderPrice'] = price * data['itemQuantity']
 		if(data['itemQuantity']>=0):
 			Order(**data).put()
-	
+
 			self.update_customer_credit_debit_total(data,c_key,credit)
-		
+
 			self.update_dailyorder(data)
-	
-		
+
+
 		return self._copyOrderToForm(o_key.get())
 
 	def _copyItemsToForm(self, item):
@@ -225,7 +224,7 @@ class DairyManagemnetApi(remote.Service):
 		return it
 
 
-	@endpoints.method(message_types.VoidMessage,ItemList, 
+	@endpoints.method(message_types.VoidMessage,ItemList,
 	path='/getItemList', http_method='GET', name='getItemList')
 	def getItemList(self,request):
 		print "creating Customer"
@@ -237,7 +236,7 @@ class DairyManagemnetApi(remote.Service):
 		for q in query1:
 			c.append(self._copyItemsToForm(q))
 		return ItemList(itemList=c)
-		
+
 	def _copyCustomerTotalDetailToForm(self, cust):
 		cf = CustomerTotalForm()
 		if cust:
@@ -250,8 +249,8 @@ class DairyManagemnetApi(remote.Service):
 			#setattr(cf,'itemQuantity',2.5)
 			cf.check_initialized()
 		return cf
-	
-	@endpoints.method(message_types.VoidMessage,CustomerList, 
+
+	@endpoints.method(message_types.VoidMessage,CustomerList,
 	path='/getCustomerList', http_method='GET', name='getCustomerList')
 	def getCustomerList(self,request):
 		c = []
@@ -259,7 +258,7 @@ class DairyManagemnetApi(remote.Service):
 		for q in query1:
 			setattr(q,'custId',q.key)
 			c.append(self._copyCustomerTotalDetailToForm(q))
-								
+
 		return CustomerList(customerList=c)
 
 	def _copyCustomerItemQuantityToForm(self, cust):
@@ -274,7 +273,7 @@ class DairyManagemnetApi(remote.Service):
 			#setattr(cf,'itemQuantity',2.5)
 			cf.check_initialized()
 		return cf
-	@endpoints.method(ItemDateForm,CustomerShortFormList, 
+	@endpoints.method(ItemDateForm,CustomerShortFormList,
 	path='/getDateSpecifiedPurchase', http_method='GET', name='getDateSpecifiedPurchase')
 	def getDateSpecifiedPurchase(self,request):
 		c = []
@@ -288,7 +287,7 @@ class DairyManagemnetApi(remote.Service):
 			if (field.name == 'itemId'):
 				data[field.name] = ndb.Key(Item,getattr(request,field.name))
 			else:
-				data[field.name] = getattr(request,field.name) 
+				data[field.name] = getattr(request,field.name)
 		logging.debug('date')
 		logging.debug(data['date'])
 		for q in query1:
@@ -318,12 +317,12 @@ class DairyManagemnetApi(remote.Service):
 			setattr(q,'custId',q.key)
 			c.append(self._copyCustomerItemQuantityToForm(q))
 			z = []
-			
-			
-		return CustomerShortFormList(custItemQuantityList=c)
-	
 
-	@endpoints.method(GetCustIDForm,ReturnCustOrderForm, 
+
+		return CustomerShortFormList(custItemQuantityList=c)
+
+
+	@endpoints.method(GetCustIDForm,ReturnCustOrderForm,
 	path='/getOrder', http_method='GET', name='getOrder')
 	def getOrder(self,request):
 		data = {}
@@ -339,7 +338,7 @@ class DairyManagemnetApi(remote.Service):
 			c.append(self._copyOrderToForm(order))
 			logging.debug(c)
 		return ReturnCustOrderForm(orderList=c)
-	
+
 
 
 
